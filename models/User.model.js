@@ -18,12 +18,15 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    pranks: [{ type: Schema.Types.ObjectId, ref: 'Prank' }]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );
+
+
 
 const User = model("User", userSchema);
 
