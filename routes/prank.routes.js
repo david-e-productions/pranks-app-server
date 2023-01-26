@@ -78,6 +78,8 @@ router.get("/mypranks", (req, res) => {
 //delete a prank
 
 router.delete("/pranks/:prankId", (req, res) => {
+  const { prankId } = req.params;
+
   if (!mongoose.Types.ObjectId.isValid(prankId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
