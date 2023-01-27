@@ -10,7 +10,7 @@ const stepSchema = new Schema({
   description: {
     type: String,
   },
-  comments: [],
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 const Step = model("Step", stepSchema);
