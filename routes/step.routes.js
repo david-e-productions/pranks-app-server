@@ -2,31 +2,47 @@ const router = require("express").Router();
 const Step = require("../models/Step.model");
 const Prank = require("../models/Prank.model");
 const mongoose = require("mongoose");
+const { isAuthenticated } = require("./../middleware/jwt.middleware.js");
 
 //create a new step
 
-router.post("/steps", (req, res) => {
+router.post("/step", isAuthenticated, async (req, res) => {
   const { title, description, prankId } = req.body;
 
-  Step.create({
+  const newStep = await Step.create({
     title,
     isDone: false,
     description,
     comments: [],
-  }).then((newStep) => {
-    return Prank.findByIdAndUpdate(
-      prankId,
-      { $push: { steps: newStep._id } },
-      { new: true }
-    )
-      .then((response) => res.json(response))
-      .catch((err) => res.json(err));
   });
+
+  Prank.findByIdAndUpdate(
+    prankId,
+    { $push: { steps: newStep._id } },
+    { new: true }
+  )
+    .then((response) => res.json(response))
+    .catch((err) => res.json(err));
+});
+
+//edit a specific step
+
+router.put("/step/:stepId", isAuthenticated, (req, res) => {
+  const { stepId } = req.params;
+  const { title, description } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(stepId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+  Step.findByIdAndUpdate(stepId, { title, description }, { new: true })
+    .then((updatedPrank) => res.json(updatedPrank))
+    .catch((err) => console.log(err));
 });
 
 //delete a step
 
-router.delete("/steps/:stepId", (req, res) => {
+router.delete("/step/:stepId", isAuthenticated, (req, res) => {
   const { stepId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(stepId)) {
