@@ -1,21 +1,30 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 const Prank = require("../models/Prank.model");
+const { isAuthenticated } = require("./../middleware/jwt.middleware.js");
+const User = require("../models/User.model");
 
 //create a new prank
 
-router.post("/createprank", (req, res) => {
-  const { title, time, place, description, prankee } = req.body;
+router.post("/prank", isAuthenticated, async (req, res) => {
+  const { title, time, place, description, prankee, userId } = req.body;
 
-  Prank.create({
+  const newPrank = await Prank.create({
     title,
     time,
     place,
     description,
     prankee,
+    userId,
     comments: [],
     steps: [],
-  })
+  });
+
+  User.findByIdAndUpdate(
+    userId,
+    { $push: { pranks: newPrank._id } },
+    { new: true }
+  )
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -31,7 +40,7 @@ router.get("/pranks", (req, res) => {
 
 //specific prank
 
-router.get("/pranks/:prankId", (req, res) => {
+router.get("/prank/:prankId", (req, res) => {
   const { prankId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(prankId)) {
@@ -46,7 +55,7 @@ router.get("/pranks/:prankId", (req, res) => {
 
 //edit a specific prank
 
-router.put("/pranks/:prankId", (req, res) => {
+router.put("/prank/:prankId", isAuthenticated, (req, res) => {
   const { prankId } = req.params;
   const { title, time, place, description, prankee } = req.body;
 
@@ -65,19 +74,15 @@ router.put("/pranks/:prankId", (req, res) => {
 
 //find pranks of a specific user
 
-router.get("/mypranks", (req, res) => {
-  //   console.log(req.session.currentUser)`// here the user would come from the frontend
-  //  // const {username} = req.session.currentUser
-  //  // const { currentUser } = req.session;
+router.get("/mypranks", isAuthenticated, (req, res) => {
+  const { userId } = req.body;
 
-  Prank.find({ user: user }).then((prankFound) => {
-    res.json(prankFound);
-  });
+  Prank.find({ user: userId }).then((prankFound) => res.json(prankFound));
 });
 
 //delete a prank
 
-router.delete("/pranks/:prankId", (req, res) => {
+router.delete("/prank/:prankId", isAuthenticated, (req, res) => {
   const { prankId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(prankId)) {
