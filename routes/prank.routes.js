@@ -34,6 +34,7 @@ router.post("/prank", isAuthenticated, async (req, res) => {
 router.get("/pranks", (req, res) => {
   Prank.find()
     .populate("steps")
+    .populate("comments")
     .then((allPranks) => res.json(allPranks))
     .catch((err) => console.log(err));
 });
@@ -49,6 +50,7 @@ router.get("/prank/:prankId", (req, res) => {
   }
   Prank.findById(prankId)
     .populate("steps")
+    .populate("comments")
     .then((foundPrank) => res.json(foundPrank))
     .catch((err) => console.log(err));
 });
