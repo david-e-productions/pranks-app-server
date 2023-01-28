@@ -36,18 +36,18 @@ router.get("/steps", (req, res) => {
 
 //specific step
 
-// router.get("/step/:stepId", (req, res) => {
-//   const { stepId } = req.params;
+router.get("/step/:stepId", (req, res) => {
+  const { stepId } = req.params;
 
-//   if (!mongoose.Types.ObjectId.isValid(stepId)) {
-//     res.status(400).json({ message: "Specified id is not valid" });
-//     return;
-//   }
-//   Step.findById(stepId)
-//     .populate("comments")
-//     .then((foundStep) => res.json(foundStep))
-//     .catch((err) => console.log(err));
-// });
+  if (!mongoose.Types.ObjectId.isValid(stepId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+  Step.findById(stepId)
+    .populate("comments")
+    .then((foundStep) => res.json(foundStep))
+    .catch((err) => console.log(err));
+});
 
 //edit a specific step
 
