@@ -53,13 +53,15 @@ router.get("/step/:stepId", (req, res) => {
 
 router.put("/step/:stepId", isAuthenticated, (req, res) => {
   const { stepId } = req.params;
-  const { title, description } = req.body;
+  const { title, description, isDone } = req.body;
+
+  console.log(req.body.isDone)
 
   if (!mongoose.Types.ObjectId.isValid(stepId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
-  Step.findByIdAndUpdate(stepId, { title, description }, { new: true })
+  Step.findByIdAndUpdate(stepId, { title, description, isDone }, { new: true })
     .then((updatedPrank) => res.json(updatedPrank))
     .catch((err) => console.log(err));
 });
