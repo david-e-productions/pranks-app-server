@@ -79,7 +79,7 @@ router.put("/prank/:prankId", isAuthenticated, (req, res) => {
 router.get("/mypranks/:userId", isAuthenticated, (req, res) => {
   const { userId } = req.params;
 
-  Prank.find({ user: userId }).then((prankFound) => res.json(prankFound));
+  Prank.find({ userId: userId }).then((prankFound) => res.json(prankFound));
 });
 
 //delete a prank
