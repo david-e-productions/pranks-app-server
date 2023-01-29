@@ -76,8 +76,8 @@ router.put("/prank/:prankId", isAuthenticated, (req, res) => {
 
 //find pranks of a specific user
 
-router.get("/mypranks", isAuthenticated, (req, res) => {
-  const { userId } = req.body;
+router.get("/mypranks/:userId", isAuthenticated, (req, res) => {
+  const { userId } = req.params;
 
   Prank.find({ user: userId }).then((prankFound) => res.json(prankFound));
 });
