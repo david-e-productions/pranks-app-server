@@ -36,30 +36,32 @@ router.get("/steps", (req, res) => {
 
 //specific step
 
-// router.get("/step/:stepId", (req, res) => {
-//   const { stepId } = req.params;
-
-//   if (!mongoose.Types.ObjectId.isValid(stepId)) {
-//     res.status(400).json({ message: "Specified id is not valid" });
-//     return;
-//   }
-//   Step.findById(stepId)
-//     .populate("comments")
-//     .then((foundStep) => res.json(foundStep))
-//     .catch((err) => console.log(err));
-// });
-
-//edit a specific step
-
-router.put("/step/:stepId", isAuthenticated, (req, res) => {
+router.get("/step/:stepId", (req, res) => {
   const { stepId } = req.params;
-  const { title, description } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(stepId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
-  Step.findByIdAndUpdate(stepId, { title, description }, { new: true })
+  Step.findById(stepId)
+    .populate("comments")
+    .then((foundStep) => res.json(foundStep))
+    .catch((err) => console.log(err));
+});
+
+//edit a specific step
+
+router.put("/step/:stepId", isAuthenticated, (req, res) => {
+  const { stepId } = req.params;
+  const { title, description, isDone } = req.body;
+
+  console.log(req.body.isDone)
+
+  if (!mongoose.Types.ObjectId.isValid(stepId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+  Step.findByIdAndUpdate(stepId, { title, description, isDone }, { new: true })
     .then((updatedPrank) => res.json(updatedPrank))
     .catch((err) => console.log(err));
 });

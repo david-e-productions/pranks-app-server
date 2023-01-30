@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 //create comment
 
 router.post("/commentprank", isAuthenticated, async (req, res) => {
-  const { description, prankId, userId } = req.body;
-  const newComment = await Comment.create({ description, userId });
+  const { description, prankId, user } = req.body;
+  const newComment = await Comment.create({ description, user });
 
   Prank.findByIdAndUpdate(
     prankId,
