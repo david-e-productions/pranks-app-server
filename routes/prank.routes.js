@@ -50,7 +50,26 @@ router.get("/prank/:prankId", (req, res) => {
   }
   Prank.findById(prankId)
     .populate("steps")
+
     .populate("comments")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    })
+    .populate({
+      path: "steps",
+      populate: { path: "comments", model: "Comment" },
+    })
+   
+    .populate({
+      path: 'steps',
+      populate:{path:'comments',
+      populate:{path: 'user',model:'User'}}
+    })
+    
     .then((foundPrank) => res.json(foundPrank))
     .catch((err) => console.log(err));
 });

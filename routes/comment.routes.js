@@ -21,8 +21,8 @@ router.post("/commentprank", isAuthenticated, async (req, res) => {
 });
 
 router.post("/commentstep", isAuthenticated, async (req, res) => {
-  const { description, stepId, userId } = req.body;
-  const newComment = await Comment.create({ description, userId });
+  const { description, stepId, user } = req.body;
+  const newComment = await Comment.create({ description, user });
 
   Step.findByIdAndUpdate(
     stepId,
