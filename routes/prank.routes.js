@@ -3,11 +3,30 @@ const mongoose = require("mongoose");
 const Prank = require("../models/Prank.model");
 const { isAuthenticated } = require("./../middleware/jwt.middleware.js");
 const User = require("../models/User.model");
+const fileUploader = require("../config/cloudinarty.config");
+
+
+// img upload
+
+router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
+});
+
 
 //create a new prank
 
 router.post("/prank", isAuthenticated, async (req, res) => {
-  const { title, time, place, description, prankee, userId } = req.body;
+  const { title, time, place, description, prankee, imageUrl, userId } = req.body;
 
   const newPrank = await Prank.create({
     title,
@@ -16,6 +35,7 @@ router.post("/prank", isAuthenticated, async (req, res) => {
     description,
     prankee,
     userId,
+    imageUrl,
     comments: [],
     steps: [],
   });

@@ -16,6 +16,9 @@ const prankSchema = new Schema({
   prankee: {
     type: String,
   },
+  imageUrl: {
+    type: String,
+  },
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   userId: { type: Schema.Types.ObjectId, ref: "User" },
   steps: [{ type: Schema.Types.ObjectId, ref: "Step" }],
