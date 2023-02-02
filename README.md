@@ -1,7 +1,5 @@
 # Pranklicious
 
-![Getting Started](./public/landingPageImg.png)
-
 [Click here to see deployed website](https://pranklicious.netlify.app)
 
 ## Description
