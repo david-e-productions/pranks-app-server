@@ -43,8 +43,6 @@ Made with a wink by David and Davide
 | GET    | `/api/steps`             |                                                                      | Return all comment     |
 | DELETE | `/api/comment/:commentId`| { `commentId` }                                                      | Delete a comment       |
 
-[Pranklicious](https://pranklicious.netlify.app)
-
 ## Links
 
 - [Trello Link](https://trello.com/b/AvS3JpAn/prankster)
