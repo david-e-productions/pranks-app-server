@@ -98,7 +98,7 @@ router.get("/prank/:prankId", (req, res) => {
 
 router.put("/prank/:prankId", isAuthenticated, (req, res) => {
   const { prankId } = req.params;
-  const { title, time, place, description, prankee } = req.body;
+  const { title, time, place, description, imageUrl, prankee } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(prankId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -106,7 +106,7 @@ router.put("/prank/:prankId", isAuthenticated, (req, res) => {
   }
   Prank.findByIdAndUpdate(
     prankId,
-    { title, time, place, description, prankee },
+    { title, time, place, description, imageUrl, prankee },
     { new: true }
   )
     .then((updatedPrank) => res.json(updatedPrank))
