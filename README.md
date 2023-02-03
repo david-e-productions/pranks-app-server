@@ -43,15 +43,15 @@ Made with a wink by David and Davide
 | GET    | `/api/steps`             |                                                                      | Return all comment     |
 | DELETE | `/api/comment/:commentId`| { `commentId` }                                                      | Delete a comment       |
 
-### models are:
+### The models are:
 
-| model        | relationship             | with                  | 
-| ------------ | ------------------------ | --------------------- |
-| user         | one to many              | pranks                | 
-| prank        | one to many              | steps & comments      | 
-| prank        | one to one               | user                  | 
-| step         | one to many              | comments              | 
-| comment      | one to one               | user                  | 
+| model        | relationship                 | with                     | 
+| ------------ | ---------------------------- | ------------------------ |
+| user         | ` one to many `              | ` pranks `               | 
+| prank        | ` one to many `              | ` steps & comments `     | 
+| prank        | ` one to one `               | ` user `                 | 
+| step         | ` one to many `              | ` comments `             | 
+| comment      | ` one to one `               | ` user `                 | 
 
 
 ## Links
